@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>PetShop | Tienda para mascotas</title>
+
+    <link rel="stylesheet" href="css/estilos.css">
+</head>
+
+<body>
+
+    <!-- ================= HEADER ================= -->
+
+    <header>
+
+        <div class="logo">
+            🐾 PetShop
+        </div>
+
+        <nav>
+            <a href="index.html">Inicio</a>
+            <a href="productos.html">Productos</a>
+            <a href="carrito.html">Carrito 🛒</a>
+            <a href="login.html" id="menuUsuario">Iniciar sesión</a>
+        </nav>
+
+    </header>
+
+
+    <!-- ================= INICIO ================= -->
+
+    <main>
+
+        <section class="hero">
+
+            <div class="hero-texto">
+
+                <h1>Todo para tu mejor amigo 🐶🐱</h1>
+
+                <p>
+                    Encuentra comida, ropa, accesorios y productos
+                    para cuidar y consentir a tu mascota.
+                </p>
+
+                <a href="productos.html" class="boton">
+                    Ver productos
+                </a>
+
+            </div>
+
+
+            <div class="hero-imagen">
+
+                <!-- AQUÍ PUEDES COLOCAR TU IMAGEN -->
+
+                <div class="espacio-imagen">
+                    <span>🐶🐱</span>
+                    <p>Coloca aquí tu imagen</p>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================= CATEGORÍAS ================= -->
+
+        <section class="categorias">
+
+            <h2>Encuentra lo que necesitas</h2>
+
+            <div class="categoria-contenedor">
+
+                <div class="categoria">
+                    <span>🍖</span>
+                    <h3>Alimentos</h3>
+                    <p>Comida para perros y gatos.</p>
+                </div>
+
+                <div class="categoria">
+                    <span>👕</span>
+                    <h3>Ropa</h3>
+                    <p>Prendas cómodas para tu mascota.</p>
+                </div>
+
+                <div class="categoria">
+                    <span>🐕</span>
+                    <h3>Accesorios</h3>
+                    <p>Collares, correas y mucho más.</p>
+                </div>
+
+                <div class="categoria">
+                    <span>💊</span>
+                    <h3>Cuidado</h3>
+                    <p>Productos para su cuidado.</p>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================= PRODUCTOS DESTACADOS ================= -->
+
+        <section class="destacados">
+
+            <h2>Productos destacados</h2>
+
+            <div class="productos-destacados">
+
+                <div class="producto">
+
+                    <div class="producto-imagen">
+                        🦴
+                    </div>
+
+                    <h3>Alimento para perro</h3>
+
+                    <p class="precio">S/ 45.00</p>
+
+                    <button
+                        class="boton"
+                        onclick="agregarAlCarrito(1)">
+                        Agregar al carrito
+                    </button>
+
+                </div>
+
+
+                <div class="producto">
+
+                    <div class="producto-imagen">
+                        🐕
+                    </div>
+
+                    <h3>Collar para perro</h3>
+
+                    <p class="precio">S/ 25.00</p>
+
+                    <button
+                        class="boton"
+                        onclick="agregarAlCarrito(2)">
+                        Agregar al carrito
+                    </button>
+
+                </div>
+
+
+                <div class="producto">
+
+                    <div class="producto-imagen">
+                        👕
+                    </div>
+
+                    <h3>Ropa para mascota</h3>
+
+                    <p class="precio">S/ 35.00</p>
+
+                    <button
+                        class="boton"
+                        onclick="agregarAlCarrito(3)">
+                        Agregar al carrito
+                    </button>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- ================= FOOTER ================= -->
+
+    <footer>
+
+        <p>🐾 PetShop - Todo para tu mascota</p>
+
+        <p>© 2026 PetShop. Todos los derechos reservados.</p>
+
+    </footer>
+
+
+    <script src="js/script.js"></script>
+
+</body>
+</html>

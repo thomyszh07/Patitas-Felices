@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>PetShop | Productos</title>
+
+    <link rel="stylesheet" href="css/estilos.css">
+
+</head>
+
+<body>
+
+<header>
+
+    <div class="logo">
+        🐾 PetShop
+    </div>
+
+    <nav>
+
+        <a href="index.html">Inicio</a>
+
+        <a href="productos.html">Productos</a>
+
+        <a href="carrito.html">
+            Carrito 🛒
+            <span id="contadorCarrito">0</span>
+        </a>
+
+        <a href="login.html" id="menuUsuario">
+            Iniciar sesión
+        </a>
+
+    </nav>
+
+</header>
+
+
+<main class="contenedor">
+
+    <h1 class="titulo">Nuestros productos</h1>
+
+    <p class="subtitulo">
+        Todo lo que tu mascota necesita en un solo lugar.
+    </p>
+
+
+    <!-- FILTROS -->
+
+    <div class="filtros">
+
+        <button onclick="mostrarProductos('todos')">
+            Todos
+        </button>
+
+        <button onclick="mostrarProductos('alimentos')">
+            🍖 Alimentos
+        </button>
+
+        <button onclick="mostrarProductos('ropa')">
+            👕 Ropa
+        </button>
+
+        <button onclick="mostrarProductos('accesorios')">
+            🐕 Accesorios
+        </button>
+
+        <button onclick="mostrarProductos('cuidado')">
+            💊 Cuidado
+        </button>
+
+    </div>
+
+
+    <!-- PRODUCTOS -->
+
+    <section
+        id="listaProductos"
+        class="productos-grid">
+
+        <!-- JavaScript colocará aquí los productos -->
+
+    </section>
+
+</main>
+
+
+<footer>
+
+    <p>🐾 PetShop - Todo para tu mascota</p>
+
+</footer>
+
+
+<script src="js/script.js"></script>
+
+</body>
+</html>

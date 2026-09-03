@@ -1,0 +1,344 @@
+```html
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>PetShop | Datos de entrega</title>
+
+    <link rel="stylesheet" href="css/estilos.css">
+
+</head>
+
+
+<body>
+
+    <!-- ================= HEADER ================= -->
+
+    <header>
+
+        <div class="logo">
+            🐾 PetShop
+        </div>
+
+        <nav>
+
+            <a href="index.html">
+                Inicio
+            </a>
+
+            <a href="productos.html">
+                Productos
+            </a>
+
+            <a href="carrito.html">
+                Carrito 🛒
+            </a>
+
+            <a href="login.html" id="menuUsuario">
+                Iniciar sesión
+            </a>
+
+        </nav>
+
+    </header>
+
+
+    <!-- ================= DATOS DE ENTREGA ================= -->
+
+    <main class="formulario-contenedor">
+
+        <div class="formulario formulario-entrega">
+
+            <h1>
+                Datos de entrega 🏠
+            </h1>
+
+            <p>
+                Completa tus datos para poder recibir tu pedido.
+            </p>
+
+
+            <form id="entregaForm">
+
+
+                <!-- NOMBRE -->
+
+                <label for="nombreEntrega">
+                    Nombre completo
+                </label>
+
+                <input
+                    type="text"
+                    id="nombreEntrega"
+                    placeholder="Ingrese su nombre completo"
+                    required>
+
+
+                <!-- TELÉFONO -->
+
+                <label for="telefonoEntrega">
+                    Número de teléfono
+                </label>
+
+                <input
+                    type="tel"
+                    id="telefonoEntrega"
+                    placeholder="Ejemplo: 987654321"
+                    maxlength="9"
+                    required>
+
+
+                <!-- DIRECCIÓN -->
+
+                <label for="direccionEntrega">
+                    Dirección
+                </label>
+
+                <input
+                    type="text"
+                    id="direccionEntrega"
+                    placeholder="Av. / Jr. / Calle y número"
+                    required>
+
+
+                <!-- DISTRITO -->
+
+                <label for="distritoEntrega">
+                    Distrito
+                </label>
+
+                <select
+                    id="distritoEntrega"
+                    required>
+
+                    <option value="">
+                        Seleccione su distrito
+                    </option>
+
+                    <option value="Ate">
+                        Ate
+                    </option>
+
+                    <option value="Barranco">
+                        Barranco
+                    </option>
+
+                    <option value="Breña">
+                        Breña
+                    </option>
+
+                    <option value="Callao">
+                        Callao
+                    </option>
+
+                    <option value="Chorrillos">
+                        Chorrillos
+                    </option>
+
+                    <option value="Comas">
+                        Comas
+                    </option>
+
+                    <option value="El Agustino">
+                        El Agustino
+                    </option>
+
+                    <option value="Independencia">
+                        Independencia
+                    </option>
+
+                    <option value="La Molina">
+                        La Molina
+                    </option>
+
+                    <option value="Los Olivos">
+                        Los Olivos
+                    </option>
+
+                    <option value="Miraflores">
+                        Miraflores
+                    </option>
+
+                    <option value="Pueblo Libre">
+                        Pueblo Libre
+                    </option>
+
+                    <option value="San Borja">
+                        San Borja
+                    </option>
+
+                    <option value="San Isidro">
+                        San Isidro
+                    </option>
+
+                    <option value="San Juan de Lurigancho">
+                        San Juan de Lurigancho
+                    </option>
+
+                    <option value="San Juan de Miraflores">
+                        San Juan de Miraflores
+                    </option>
+
+                    <option value="San Martín de Porres">
+                        San Martín de Porres
+                    </option>
+
+                    <option value="Santiago de Surco">
+                        Santiago de Surco
+                    </option>
+
+                    <option value="Surquillo">
+                        Surquillo
+                    </option>
+
+                    <option value="Villa El Salvador">
+                        Villa El Salvador
+                    </option>
+
+                    <option value="Villa María del Triunfo">
+                        Villa María del Triunfo
+                    </option>
+
+                </select>
+
+
+                <!-- REFERENCIA -->
+
+                <label for="referenciaEntrega">
+                    Referencia
+                </label>
+
+                <textarea
+                    id="referenciaEntrega"
+                    rows="3"
+                    placeholder="Ejemplo: Cerca del parque, frente a la farmacia..."></textarea>
+
+
+                <!-- MÉTODO DE ENTREGA -->
+
+                <label>
+                    Método de entrega
+                </label>
+
+                <div class="opciones">
+
+                    <label class="opcion">
+
+                        <input
+                            type="radio"
+                            name="metodoEntrega"
+                            value="Delivery"
+                            checked>
+
+                        🚚 Delivery
+
+                    </label>
+
+
+                    <label class="opcion">
+
+                        <input
+                            type="radio"
+                            name="metodoEntrega"
+                            value="Recojo en tienda">
+
+                        🏪 Recojo en tienda
+
+                    </label>
+
+                </div>
+
+
+                <!-- MÉTODO DE PAGO -->
+
+                <label>
+                    Método de pago
+                </label>
+
+                <div class="opciones">
+
+                    <label class="opcion">
+
+                        <input
+                            type="radio"
+                            name="metodoPago"
+                            value="Yape / Plin"
+                            checked>
+
+                        📱 Yape / Plin
+
+                    </label>
+
+
+                    <label class="opcion">
+
+                        <input
+                            type="radio"
+                            name="metodoPago"
+                            value="Pago contra entrega">
+
+                        💵 Pago contra entrega
+
+                    </label>
+
+                </div>
+
+
+                <!-- BOTONES -->
+
+                <div class="botones-entrega">
+
+                    <a
+                        href="carrito.html"
+                        class="boton boton-secundario">
+
+                        ← Volver al carrito
+
+                    </a>
+
+
+                    <button
+                        type="submit"
+                        class="boton">
+
+                        Confirmar pedido
+
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </main>
+
+
+    <!-- ================= FOOTER ================= -->
+
+    <footer>
+
+        <p>
+            🐾 PetShop - Todo para tu mascota
+        </p>
+
+        <p>
+            © 2026 PetShop. Todos los derechos reservados.
+        </p>
+
+    </footer>
+
+
+    <script src="js/script.js"></script>
+
+</body>
+
+</html>
+```

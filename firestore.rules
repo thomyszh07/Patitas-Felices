@@ -1,0 +1,35 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // PRODUCTOS: cualquiera puede leer el catálogo (no hace falta login
+    // para ver la tienda). Solo un usuario autenticado puede escribir,
+    // y únicamente el campo "stock" — así el checkout puede descontar
+    // stock, pero nadie puede inventarse precios o crear productos
+    // desde el navegador.
+    match /productos/{productoId} {
+      allow read: if true;
+      allow update: if request.auth != null
+                    && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['stock']);
+      allow create, delete: if false; // crea/edita productos desde la consola de Firebase
+    }
+
+    // USUARIOS: cada quien solo puede leer/escribir su propio perfil.
+    match /usuarios/{uid} {
+      allow read, write: if request.auth != null && request.auth.uid == uid;
+    }
+
+    // PEDIDOS: un usuario solo puede crear pedidos a su propio nombre
+    // (uid == el suyo) y solo puede leer sus propios pedidos.
+    // Nadie puede editar o borrar un pedido ya creado desde el cliente.
+    match /pedidos/{pedidoId} {
+      allow create: if request.auth != null
+                    && request.resource.data.uid == request.auth.uid;
+      allow read: if request.auth != null
+                    && resource.data.uid == request.auth.uid;
+      allow update, delete: if false;
+    }
+
+  }
+}

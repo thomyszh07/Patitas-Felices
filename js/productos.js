@@ -111,15 +111,26 @@ function mostrarDestacados() {
 function crearTarjetaProducto(producto) {
 
     const tarjeta = document.createElement("div");
-
     tarjeta.classList.add("producto");
 
     const sinStock = !producto.stock || producto.stock <= 0;
 
+    // Verificar si existe 'imagen' y si parece una URL de imagen
+    const esUrl = producto.imagen && (
+        producto.imagen.startsWith("http://") || 
+        producto.imagen.startsWith("https://") || 
+        producto.imagen.startsWith("data:image/")
+    );
+
+    // Si es URL renderiza <img>, de lo contrario muestra el valor (o un emoji por defecto)
+    const contenidoImagen = esUrl
+        ? `<img src="${producto.imagen}" alt="${producto.nombre}" loading="lazy" style="width: 100%; height: 100%; object-fit: cover; border-radius: 8px;">`
+        : (producto.imagen || "🐾");
+
     tarjeta.innerHTML = `
 
         <div class="producto-imagen">
-            ${producto.imagen || "🐾"}
+            ${contenidoImagen}
         </div>
 
         <h3>${producto.nombre}</h3>

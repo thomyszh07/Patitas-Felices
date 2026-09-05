@@ -215,21 +215,12 @@ nav a:hover {
 }
 
 .producto-imagen {
-    height: 180px;
-
-    background-color: #ffe9bd;
-
-    border-radius: 10px;
-
-    display: flex;
-
-    justify-content: center;
-
-    align-items: center;
-
-    font-size: 70px;
-
-    margin-bottom: 15px;
+  width: 100%;
+  height: 200px; /* Ajusta según el diseño de tu tarjeta */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
 }
 
 .producto h3 {

@@ -115,18 +115,19 @@ function crearTarjetaProducto(producto) {
 
     const sinStock = !producto.stock || producto.stock <= 0;
 
-   
-    const esImagenValida = typeof producto.imagen === "string" && (
-        producto.imagen.startsWith("http://") || 
-        producto.imagen.startsWith("https://") || 
-        producto.imagen.startsWith("data:image/") ||
-        producto.imagen.startsWith("./") ||
-        producto.imagen.startsWith("../") ||
-        producto.imagen.startsWith("/")
+    // Normalizamos barras por si acaso vengan con "\"
+    const rutaImagen = typeof producto.imagen === "string" ? producto.imagen.replace(/\\/g, "/") : "";
+
+    // Comprueba si es una URL, Base64 o si termina en una extensión de imagen común
+    const esImagen = rutaImagen && (
+        rutaImagen.startsWith("http://") || 
+        rutaImagen.startsWith("https://") || 
+        rutaImagen.startsWith("data:image/") ||
+        /\.(jpg|jpeg|png|gif|webp|svg)$/i.test(rutaImagen)
     );
 
-    const contenidoImagen = esImagenValida
-        ? `<img src="${producto.imagen}" alt="${producto.nombre}" loading="lazy" style="width: 100%; height: 100%; object-fit: cover; border-radius: 8px;">`
+    const contenidoImagen = esImagen
+        ? `<img src="${rutaImagen}" alt="${producto.nombre}" loading="lazy" style="width: 100%; height: 100%; object-fit: cover; border-radius: 8px;">`
         : (producto.imagen || "🐾");
 
     tarjeta.innerHTML = `

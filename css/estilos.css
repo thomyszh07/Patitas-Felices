@@ -88,26 +88,23 @@ nav a:hover {
     width: 40%;
 }
 
-.espacio-imagen {
-    height: 300px;
-
-    border: 3px dashed #e29a42;
-
-    border-radius: 20px;
-
+/* El contenedor principal de la zona derecha */
+.hero-imagen {
+    flex: 1;             /* Hace que ocupe la mitad del banner si usas Flexbox */
     display: flex;
-    flex-direction: column;
-
-    justify-content: center;
-    align-items: center;
-
-    background-color: #fff7e6;
-
-    color: #9a642d;
+    justify-content: flex-end; /* Alinea el contenido totalmente a la derecha */
 }
 
-.espacio-imagen span {
-    font-size: 70px;
+.hero-imagen {
+    flex: 1;              /* Ocupa exactamente la mitad derecha del banner */
+    height: 100%;         /* Se adapta a la altura de la sección naranja */
+}
+
+.hero-imagen img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;    /* Llena el espacio y recorta la foto con estilo */
+    border-radius: 12px;
 }
 
 

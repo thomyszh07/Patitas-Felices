@@ -115,15 +115,17 @@ function crearTarjetaProducto(producto) {
 
     const sinStock = !producto.stock || producto.stock <= 0;
 
-    // Verificar si existe 'imagen' y si parece una URL de imagen
-    const esUrl = producto.imagen && (
+   
+    const esImagenValida = typeof producto.imagen === "string" && (
         producto.imagen.startsWith("http://") || 
         producto.imagen.startsWith("https://") || 
-        producto.imagen.startsWith("data:image/")
+        producto.imagen.startsWith("data:image/") ||
+        producto.imagen.startsWith("./") ||
+        producto.imagen.startsWith("../") ||
+        producto.imagen.startsWith("/")
     );
 
-    // Si es URL renderiza <img>, de lo contrario muestra el valor (o un emoji por defecto)
-    const contenidoImagen = esUrl
+    const contenidoImagen = esImagenValida
         ? `<img src="${producto.imagen}" alt="${producto.nombre}" loading="lazy" style="width: 100%; height: 100%; object-fit: cover; border-radius: 8px;">`
         : (producto.imagen || "🐾");
 

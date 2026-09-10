@@ -4,6 +4,8 @@
    sesión de compra, no necesita Firestore)
 ========================================= */
 
+import { mostrarNotificacion } from "./notificaciones.js";
+
 export let carrito =
     JSON.parse(localStorage.getItem("carrito")) || [];
 
@@ -42,7 +44,7 @@ export function agregarItem(producto) {
 
     guardarCarrito();
 
-    alert(producto.nombre + " fue agregado al carrito.");
+    mostrarNotificacion(producto.nombre + " fue agregado al carrito.", "exito");
 
 }
 
@@ -154,17 +156,40 @@ export function mostrarCarrito() {
 
     }
 
-    carrito.forEach(item => {
+        carrito.forEach(item => {
 
         const elemento = document.createElement("div");
 
         elemento.classList.add("item-carrito");
 
+        // Normalizamos barras por si acaso vengan con "\"
+        const rutaImagen = typeof item.imagen === "string" ? item.imagen.replace(/\\/g, "/") : "";
+
+        // Comprueba si es una URL, Base64 o si termina en una extensión de imagen común
+        const esImagen = rutaImagen && (
+            rutaImagen.startsWith("http://") ||
+            rutaImagen.startsWith("https://") ||
+            rutaImagen.startsWith("data:image/") ||
+            /\.(jpg|jpeg|png|gif|webp|svg)$/i.test(rutaImagen)
+        );
+
+        const contenidoImagen = esImagen
+            ? `<img src="${rutaImagen}" alt="${item.nombre}" loading="lazy">`
+            : (item.imagen || "🐾");
+
         elemento.innerHTML = `
 
-            <div class="item-info">
-                <h3>${item.imagen} ${item.nombre}</h3>
-                <p class="item-precio">S/ ${item.precio.toFixed(2)}</p>
+            <div class="item-principal">
+
+                <div class="item-imagen">
+                    ${contenidoImagen}
+                </div>
+
+                <div class="item-info">
+                    <h3>${item.nombre}</h3>
+                    <p class="item-precio">S/ ${item.precio.toFixed(2)}</p>
+                </div>
+
             </div>
 
             <div class="cantidad">

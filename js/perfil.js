@@ -7,6 +7,8 @@ import {
     updatePassword
 } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-auth.js";
 
+import { mostrarNotificacion } from "./notificaciones.js";
+
 const perfilNombre = document.getElementById("perfilNombre");
 const perfilCorreo = document.getElementById("perfilCorreo");
 const passwordForm = document.getElementById("passwordForm");
@@ -43,12 +45,12 @@ if (passwordForm) {
         const confirmar = document.getElementById("passwordConfirmar").value;
 
         if (nueva !== confirmar) {
-            alert("Las contraseñas nuevas no coinciden.");
+            mostrarNotificacion("Las contraseñas nuevas no coinciden.", "error");
             return;
         }
 
         if (nueva.length < 6) {
-            alert("La nueva contraseña debe tener al menos 6 caracteres.");
+            mostrarNotificacion("La nueva contraseña debe tener al menos 6 caracteres.", "error");
             return;
         }
 
@@ -67,13 +69,13 @@ if (passwordForm) {
 
             await updatePassword(usuario, nueva);
 
-            alert("Contraseña actualizada correctamente.");
+            mostrarNotificacion("Contraseña actualizada correctamente.", "exito");
 
             passwordForm.reset();
 
         } catch (error) {
 
-            alert(traducirErrorPassword(error.code));
+            mostrarNotificacion(traducirErrorPassword(error.code), "error");
 
         }
 

@@ -17,6 +17,8 @@ import {
     setDoc
 } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
 
+import { mostrarNotificacion } from "./notificaciones.js";
+
 
 /* =========================================
    REGISTRO
@@ -50,13 +52,15 @@ if (registroForm) {
                 telefono: telefono
             });
 
-            alert("Registro exitoso. Ahora puedes iniciar sesión.");
+            mostrarNotificacion("Registro exitoso. Ahora puedes iniciar sesión.", "exito");
 
-            window.location.href = "login.html";
+            setTimeout(() => {
+                window.location.href = "login.html";
+            }, 1400);
 
         } catch (error) {
 
-            alert(traducirErrorAuth(error.code));
+            mostrarNotificacion(traducirErrorAuth(error.code), "error");
 
         }
 
@@ -85,13 +89,15 @@ if (loginForm) {
             const credencial =
                 await signInWithEmailAndPassword(auth, correo, password);
 
-            alert("Bienvenido/a " + (credencial.user.displayName || correo));
+            mostrarNotificacion("Bienvenido/a " + (credencial.user.displayName || correo), "exito");
 
-            window.location.href = "index.html";
+            setTimeout(() => {
+                window.location.href = "index.html";
+            }, 1400);
 
         } catch (error) {
 
-            alert(traducirErrorAuth(error.code));
+            mostrarNotificacion(traducirErrorAuth(error.code), "error");
 
         }
 
@@ -108,9 +114,11 @@ export async function cerrarSesion() {
 
     await signOut(auth);
 
-    alert("Has cerrado sesión.");
+    mostrarNotificacion("Has cerrado sesión.", "info");
 
-    window.location.href = "index.html";
+    setTimeout(() => {
+        window.location.href = "index.html";
+    }, 1400);
 
 }
 
@@ -165,12 +173,14 @@ onAuthStateChanged(auth, function (usuario) {
         return;
     }
 
+    menuUsuario.classList.add("listo");
+
     if (usuario) {
 
         menuUsuario.dataset.logueado = "true";
 
         if (menuUsuarioTexto) {
-            menuUsuarioTexto.textContent = "Mi cuenta";
+            menuUsuarioTexto.textContent = "MI CUENTA";
         }
 
         if (menuUsuarioNombre) {
@@ -188,7 +198,7 @@ onAuthStateChanged(auth, function (usuario) {
         menuUsuario.classList.remove("abierto");
 
         if (menuUsuarioTexto) {
-            menuUsuarioTexto.textContent = "Iniciar sesión";
+            menuUsuarioTexto.textContent = "INICIAR SESIÓN";
         }
 
     }

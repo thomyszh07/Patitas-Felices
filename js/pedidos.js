@@ -6,6 +6,7 @@
 
 import { auth, db } from "./firebase-config.js";
 import { carrito, calcularTotales, vaciarCarrito } from "./carrito.js";
+import { mostrarNotificacion } from "./notificaciones.js";
 
 import {
     collection,
@@ -31,7 +32,7 @@ if (linkRealizarPedido) {
         if (carrito.length === 0) {
 
             event.preventDefault();
-            alert("Tu carrito está vacío.");
+            mostrarNotificacion("Tu carrito está vacío.", "error");
             return;
 
         }
@@ -39,8 +40,11 @@ if (linkRealizarPedido) {
         if (!auth.currentUser) {
 
             event.preventDefault();
-            alert("Debes iniciar sesión para realizar un pedido.");
-            window.location.href = "login.html";
+            mostrarNotificacion("Debes iniciar sesión para realizar un pedido.", "error");
+
+            setTimeout(() => {
+                window.location.href = "login.html";
+            }, 1400);
 
         }
 
@@ -63,13 +67,15 @@ if (entregaForm) {
         event.preventDefault();
 
         if (!auth.currentUser) {
-            alert("Debes iniciar sesión para realizar un pedido.");
-            window.location.href = "login.html";
+            mostrarNotificacion("Debes iniciar sesión para realizar un pedido.", "error");
+            setTimeout(() => {
+                window.location.href = "login.html";
+            }, 1400);
             return;
         }
 
         if (carrito.length === 0) {
-            alert("Tu carrito está vacío.");
+            mostrarNotificacion("Tu carrito está vacío.", "error");
             return;
         }
 
@@ -106,7 +112,7 @@ if (entregaForm) {
         } catch (error) {
 
             console.error(error);
-            alert(error.message || "No se pudo procesar el pedido. Intenta nuevamente.");
+            mostrarNotificacion(error.message || "No se pudo procesar el pedido. Intenta nuevamente.", "error");
 
             botonSubmit.disabled = false;
             botonSubmit.textContent = "Confirmar pedido";

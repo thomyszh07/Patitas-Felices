@@ -6,6 +6,7 @@
 
 import { db } from "./firebase-config.js";
 import { agregarItem } from "./carrito.js";
+import { mostrarNotificacion } from "./notificaciones.js";
 
 import {
     collection,
@@ -167,7 +168,7 @@ export function agregarAlCarrito(id) {
     }
 
     if (!producto.stock || producto.stock <= 0) {
-        alert("Este producto no tiene stock disponible.");
+        mostrarNotificacion("Este producto no tiene stock disponible.", "error");
         return;
     }
 

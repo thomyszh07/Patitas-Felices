@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>Patitas Felices | Mi perfil</title>
+
+    <link rel="stylesheet" href="css/estilos.css">
+
+</head>
+
+
+<body>
+
+<header class="Headthing">
+
+    <div class="logo">
+        🐾 PATITAS FELICES
+    </div>
+
+    <nav>
+
+        <a href="index.html">Inicio</a>
+
+        <a href="productos.html">Productos</a>
+
+        <a href="carrito.html">
+            Carrito
+            <span id="contadorCarrito">0</span>
+        </a>
+
+        <div class="menu-usuario" id="menuUsuario" data-logueado="false">
+
+            <button type="button" class="menu-usuario-boton" id="menuUsuarioBoton">
+                <span id="menuUsuarioTexto">Iniciar sesión</span>
+                <span class="menu-usuario-flecha">▾</span>
+            </button>
+
+            <div class="menu-usuario-dropdown" id="menuUsuarioDropdown">
+
+                <div class="menu-usuario-datos">
+                    <p class="menu-usuario-nombre" id="menuUsuarioNombre"></p>
+                    <p class="menu-usuario-correo" id="menuUsuarioCorreo"></p>
+                </div>
+
+                <a href="perfil.html">Mi perfil</a>
+
+                <button type="button" class="menu-usuario-cerrar" id="menuUsuarioCerrarSesion">
+                    Cerrar sesión
+                </button>
+
+            </div>
+
+        </div>
+
+    </nav>
+
+</header>
+
+
+<main class="formulario-contenedor">
+
+    <div class="formulario">
+
+        <h1>Mi perfil</h1>
+
+        <p>
+            Consulta los datos de tu cuenta y cambia tu contraseña.
+        </p>
+
+        <div class="perfil-datos">
+            <div>
+                <p><strong>Usuario:</strong> <span id="perfilNombre">—</span></p>
+                <p><strong>Correo:</strong> <span id="perfilCorreo">—</span></p>
+            </div>
+        </div>
+
+        <hr>
+
+        <h2 style="text-align:center; color:#6b3e18; margin-bottom:10px;">
+            Cambiar contraseña
+        </h2>
+
+        <form id="passwordForm">
+
+            <label for="passwordActual">
+                Contraseña actual
+            </label>
+
+            <input
+                type="password"
+                id="passwordActual"
+                placeholder="Ingresa tu contraseña actual"
+                required>
+
+
+            <label for="passwordNueva">
+                Nueva contraseña
+            </label>
+
+            <input
+                type="password"
+                id="passwordNueva"
+                placeholder="Mínimo 6 caracteres"
+                minlength="6"
+                required>
+
+
+            <label for="passwordConfirmar">
+                Confirmar nueva contraseña
+            </label>
+
+            <input
+                type="password"
+                id="passwordConfirmar"
+                placeholder="Repite la nueva contraseña"
+                minlength="6"
+                required>
+
+
+            <button
+                type="submit"
+                class="boton">
+
+                Guardar cambios
+
+            </button>
+
+        </form>
+
+    </div>
+
+</main>
+
+
+<footer>
+
+    <p>🐾 © 2026 Patitas Felices. Todos los derechos reservados.</p>
+
+</footer>
+
+
+<script type="module" src="js/main.js"></script>
+
+</body>
+</html>

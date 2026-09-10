@@ -77,6 +77,138 @@ nav a:hover {
     color: #5c3517;
 }
 
+/* =========================
+   MENÚ "MI CUENTA"
+========================= */
+
+.menu-usuario {
+    position: relative;
+}
+
+.menu-usuario-boton {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 25px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    color: #5c3517;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 0;
+}
+
+.menu-usuario-boton:hover {
+    color: #ffffff;
+}
+
+.menu-usuario-flecha {
+    font-size: 15px;
+    transition: transform 0.15s ease;
+}
+
+.menu-usuario.abierto .menu-usuario-flecha {
+    transform: rotate(180deg);
+}
+
+.menu-usuario-dropdown {
+    display: none;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    margin-top: 14px;
+    background-color: #fffdf6;
+    border: 1px solid #edc982;
+    border-radius: 10px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.18);
+    min-width: 230px;
+    padding: 10px;
+    z-index: 1100;
+    font-family: Arial, sans-serif;
+    letter-spacing: normal;
+}
+
+.menu-usuario.abierto .menu-usuario-dropdown {
+    display: block;
+}
+
+.menu-usuario-datos {
+    padding: 6px 10px 12px 10px;
+    border-bottom: 1px solid #f1dfb4;
+    margin-bottom: 8px;
+}
+
+.menu-usuario-nombre {
+    font-weight: bold;
+    color: #6b3e18;
+    font-size: 16px;
+}
+
+.menu-usuario-correo {
+    font-size: 13px;
+    color: #8a7259;
+    margin-top: 3px;
+    word-break: break-all;
+}
+
+.menu-usuario-dropdown a,
+.menu-usuario-dropdown button {
+    display: block;
+    width: 100%;
+    text-align: left;
+    padding: 10px;
+    border-radius: 7px;
+    font-size: 15px;
+    font-weight: normal;
+    color: #4a3a2a;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-family: Arial, sans-serif;
+}
+
+.menu-usuario-dropdown a:hover,
+.menu-usuario-dropdown button:hover {
+    background-color: #fdeecb;
+}
+
+.menu-usuario-dropdown .menu-usuario-cerrar {
+    color: #b3401b;
+    font-weight: bold;
+}
+
+
+/* =========================
+   PERFIL DE USUARIO
+========================= */
+
+.perfil-datos {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #fff3d9;
+    border: 1px solid #edc982;
+    border-radius: 10px;
+    padding: 15px 20px;
+    margin-bottom: 10px;
+}
+
+.perfil-datos p {
+    margin: 4px 0;
+}
+
+.perfil-datos strong {
+    color: #6b3e18;
+}
+
+.formulario hr {
+    border: none;
+    border-top: 1px solid #f1dfb4;
+    margin: 25px 0;
+}
+
 
 /* =========================
    HERO
@@ -682,6 +814,17 @@ footer {
     .productos-grid,
     .productos-destacados {
         grid-template-columns: 1fr;
+    }
+    .menu-usuario-dropdown {
+        right: auto;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    .perfil-datos {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 6px;
     }
 
 }

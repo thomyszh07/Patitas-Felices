@@ -30,9 +30,29 @@
             <span id="contadorCarrito">0</span>
         </a>
 
-        <a href="login.html" id="menuUsuario">
-           INICIO SESION 
-        </a>
+        <div class="menu-usuario" id="menuUsuario" data-logueado="false">
+
+                <button type="button" class="menu-usuario-boton" id="menuUsuarioBoton">
+                    <span id="menuUsuarioTexto">Iniciar sesión</span>
+                    <span class="menu-usuario-flecha">▾</span>
+                </button>
+
+                <div class="menu-usuario-dropdown" id="menuUsuarioDropdown">
+
+                    <div class="menu-usuario-datos">
+                        <p class="menu-usuario-nombre" id="menuUsuarioNombre"></p>
+                        <p class="menu-usuario-correo" id="menuUsuarioCorreo"></p>
+                    </div>
+
+                    <a href="perfil.html">Mi perfil</a>
+
+                    <button type="button" class="menu-usuario-cerrar" id="menuUsuarioCerrarSesion">
+                        Cerrar sesión
+                    </button>
+
+                </div>
+
+            </div>
 
     </nav>
 

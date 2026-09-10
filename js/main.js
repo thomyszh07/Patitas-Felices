@@ -22,7 +22,7 @@ import {
 
 import { mostrarPedido } from "./pedidos.js";
 import "./pedidos.js"; // registra los listeners de datos-entrega.html
-
+import "./perfil.js"; // registra los listeners de perfil.html
 
 // Exponer al scope global para los onclick="..." en el HTML
 window.mostrarProductos = mostrarProductos;

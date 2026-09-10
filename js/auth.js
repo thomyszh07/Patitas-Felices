@@ -120,9 +120,46 @@ export async function cerrarSesion() {
    (se ejecuta automáticamente en cada página)
 ========================================= */
 
-onAuthStateChanged(auth, function (usuario) {
+const menuUsuario = document.getElementById("menuUsuario");
+const menuUsuarioBoton = document.getElementById("menuUsuarioBoton");
+const menuUsuarioTexto = document.getElementById("menuUsuarioTexto");
+const menuUsuarioNombre = document.getElementById("menuUsuarioNombre");
+const menuUsuarioCorreo = document.getElementById("menuUsuarioCorreo");
+const menuUsuarioCerrarSesion = document.getElementById("menuUsuarioCerrarSesion");
 
-    const menuUsuario = document.getElementById("menuUsuario");
+if (menuUsuario && menuUsuarioBoton) {
+
+    menuUsuarioBoton.addEventListener("click", function (event) {
+
+        event.stopPropagation();
+
+        if (menuUsuario.dataset.logueado === "true") {
+            menuUsuario.classList.toggle("abierto");
+        } else {
+            window.location.href = "login.html";
+        }
+
+    });
+
+    document.addEventListener("click", function () {
+        menuUsuario.classList.remove("abierto");
+    });
+
+    if (menuUsuarioCerrarSesion) {
+
+        menuUsuarioCerrarSesion.addEventListener("click", function (event) {
+
+            event.stopPropagation();
+
+            cerrarSesion();
+
+        });
+
+    }
+
+}
+
+onAuthStateChanged(auth, function (usuario) {
 
     if (!menuUsuario) {
         return;
@@ -130,25 +167,29 @@ onAuthStateChanged(auth, function (usuario) {
 
     if (usuario) {
 
-        menuUsuario.textContent = "Mi cuenta (" + (usuario.displayName || usuario.email) + ")";
+        menuUsuario.dataset.logueado = "true";
 
-        menuUsuario.href = "#";
+        if (menuUsuarioTexto) {
+            menuUsuarioTexto.textContent = "Mi cuenta";
+        }
 
-        menuUsuario.onclick = function (event) {
+        if (menuUsuarioNombre) {
+            menuUsuarioNombre.textContent = usuario.displayName || "Usuario";
+        }
 
-            event.preventDefault();
-
-            cerrarSesion();
-
-        };
+        if (menuUsuarioCorreo) {
+            menuUsuarioCorreo.textContent = usuario.email || "";
+        }
 
     } else {
 
-        menuUsuario.textContent = "Iniciar sesión";
+        menuUsuario.dataset.logueado = "false";
 
-        menuUsuario.href = "login.html";
+        menuUsuario.classList.remove("abierto");
 
-        menuUsuario.onclick = null;
+        if (menuUsuarioTexto) {
+            menuUsuarioTexto.textContent = "Iniciar sesión";
+        }
 
     }
 

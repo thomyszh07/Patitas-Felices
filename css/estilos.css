@@ -41,18 +41,20 @@ a {
 }
 */
 header {
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
     position: fixed;
     width: 100%;
     background-color: #f6b35f;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 20px 300px;
+    padding: 20px 30px;
+    letter-spacing: 1px;
     z-index: 1000;
 }
 
 main {
-    padding-top: 120px;
+   /*padding-top: 120px;*/
     flex: 1;
 }
 
@@ -82,7 +84,7 @@ nav a:hover {
 ========================= */
 
 .hero {
-    min-height: 450px;
+    min-height: 480px;
     padding: 60px 8%;
 
     display: flex;

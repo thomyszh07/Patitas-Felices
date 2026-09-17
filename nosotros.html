@@ -3,58 +3,89 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Patitas Felices</title>
-    <!-- Importación de tipografía -->
-    <link href="https://fonts.googleapis.com/css2?family=Impact&family=Segoe+UI:wght@400;600;700&display=swap" rel="stylesheet">
-    <!-- Vinculación del archivo CSS externo -->
-    <link rel="stylesheet" href="styles.css">
+
+    <title>Patitas Felices | Sobre Nosotros</title>
+
+    <link rel="stylesheet" href="css/estilos.css">
 </head>
+
 <body>
 
-    <header>
-        <div class="logo">
-            <span>🐾</span> PATITAS FELICES
-        </div>
+    <!-- ================= HEADER ================= -->
+
+    <header class="Headthing">
+
+       <div class="logo">
+       <img src="assets/PATITAS.jpg" alt="Logo de Patitas Felices" class="logo-img">
+       PATITAS FELICES 
+       </div>
+
+
         <nav>
-            <ul>
-                <li><a href="#">Inicio</a></li>
-                <li><a href="#nosotros">Nosotros</a></li>
-                <li><a href="#">Productos</a></li>
-                <li><a href="#">Carrito 0</a></li>
-                <li><a href="#">Iniciar sesión</a></li>
-            </ul>
+            <a href="index.html">INICIO</a>
+            <a href="nosotros.html">NOSOTROS</a>
+            <a href="productos.html">PRODUCTOS</a>
+            <a href="carrito.html">CARRITO </a>
+            <div class="menu-usuario" id="menuUsuario" data-logueado="false">
+
+                <button type="button" class="menu-usuario-boton" id="menuUsuarioBoton">
+                    <span id="menuUsuarioTexto">INICIO SESIÓN</span>
+                    <span class="menu-usuario-flecha">▾</span>
+                </button>
+
+                <div class="menu-usuario-dropdown" id="menuUsuarioDropdown">
+
+                    <div class="menu-usuario-datos">
+                        <p class="menu-usuario-nombre" id="menuUsuarioNombre"></p>
+                        <p class="menu-usuario-correo" id="menuUsuarioCorreo"></p>
+                    </div>
+
+                    <a href="perfil.html">Mi perfil</a>
+
+                    <button type="button" class="menu-usuario-cerrar" id="menuUsuarioCerrarSesion">
+                        Cerrar sesión
+                    </button>
+
+                </div>
+
+            </div>
         </nav>
+
     </header>
 
+
+    <!-- ================= SOBRE NOSOTROS ================= -->
+
     <main>
-        <!-- SECCIÓN SOBRE NOSOTROS Y UBICACIÓN -->
-            <h1>Sobre Nosotros</h1>
-            <p class="subtitle" style="margin-bottom: 10px;">
-                <!-- EDITAR: Descripción de tu tienda -->
+
+        <section id="nosotros" class="contenedor">
+
+            <h1 class="titulo">Sobre Nosotros</h1>
+
+            <p class="subtitulo" style="margin-bottom: 10px;">
                 Somos una tienda comprometida con la salud y felicidad de tus mascotas, ofreciendo productos de alta calidad y un trato amigable.
             </p>
 
             <!-- FOTO DEL LOCAL Y UBICACIÓN -->
             <div class="location-grid">
-                <!-- Foto del Local -->
+
                 <div class="card-box">
-                    <!-- EDITAR: Reemplaza la URL de src con la foto de tu local -->
                     <img src="https://via.placeholder.com/500x300?text=Foto+de+Nuestro+Local" alt="Foto de la tienda Patitas Felices">
                     <p style="margin-top: 8px; font-weight: 600;">📍 ¡Ven a visitarnos!</p>
                 </div>
 
-                <!-- Mapa / Ubicación -->
                 <div class="card-box">
-                    <!-- EDITAR: Reemplaza el enlace con tu mapa de Google Maps -->
                     <iframe src="https://maps.google.com/maps?q=Lima,Peru&t=&z=13&ie=UTF8&iwloc=&output=embed"></iframe>
                     <p style="margin-top: 8px; font-weight: 600;">🏠 Av. Principal #123 - Tu Ciudad</p>
                 </div>
+
             </div>
 
-            <!-- RAZONES PARA RECOMENDARNOSS -->
+            <!-- RAZONES PARA RECOMENDARNOS -->
             <h2 style="margin-top: 30px;">¿Por qué elegirnos?</h2>
+
             <div class="reasons-grid">
-                
+
                 <div class="reason-card">
                     <div>🥇</div>
                     <h3>Calidad Garantizada</h3>
@@ -80,12 +111,22 @@
                 </div>
 
             </div>
+
         </section>
+
     </main>
 
+
+    <!-- ================= FOOTER ================= -->
+
     <footer>
-        🐾 © 2026 Patitas Felices. Todos los derechos reservados.
+
+        <p>© 2026 Patitas Felices. Todos los derechos reservados.</p>
+
     </footer>
+
+
+    <script type="module" src="js/main.js"></script>
 
 </body>
 </html>

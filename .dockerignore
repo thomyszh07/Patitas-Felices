@@ -1,0 +1,6 @@
+.git
+.firebase
+node_modules
+README-FIREBASE.md
+Dockerfile
+.dockerignore

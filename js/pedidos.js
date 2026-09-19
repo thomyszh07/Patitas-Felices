@@ -136,12 +136,22 @@ async function confirmarPedido(datosEntrega) {
     // 1) Descontar stock dentro de una transacción: si algún producto
     //    no tiene suficiente stock, TODA la operación se cancela y no
     //    se cobra ni se crea el pedido.
-    await runTransaction(db, async (transaccion) => {
+        await runTransaction(db, async (transaccion) => {
+
+        // PASO 1: LEER todos los productos primero
+        const lecturas = [];
 
         for (const item of carrito) {
 
             const productoRef = doc(db, "productos", item.id);
             const productoSnap = await transaccion.get(productoRef);
+
+            lecturas.push({ item, productoRef, productoSnap });
+
+        }
+
+        // PASO 2: validar que existan y tengan stock
+        for (const { item, productoSnap } of lecturas) {
 
             if (!productoSnap.exists()) {
                 throw new Error("El producto '" + item.nombre + "' ya no existe.");
@@ -155,6 +165,13 @@ async function confirmarPedido(datosEntrega) {
                     "(disponible: " + stockActual + ")."
                 );
             }
+
+        }
+
+        // PASO 3: ESCRIBIR (descontar stock) al final
+        for (const { item, productoRef, productoSnap } of lecturas) {
+
+            const stockActual = productoSnap.data().stock || 0;
 
             transaccion.update(productoRef, { stock: stockActual - item.cantidad });
 

@@ -6,11 +6,11 @@ from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
 
 const $ = id => document.getElementById(id);
 const form = $("entregaForm");
+
 const API_URL =
-    location.hostname === "localhost" ||
-    location.hostname === "127.0.0.1"
+    ["localhost", "127.0.0.1"].includes(location.hostname)
         ? "http://localhost:3000"
-        : "https://patitas-felices-1jlr.onrender.com";
+        : "https://patitas-felices-1j1r.onrender.com";
 
 function datosEntrega() {
     return {
@@ -24,6 +24,8 @@ function datosEntrega() {
     };
 }
 
+/* VALIDAR COMPRA */
+
 document.querySelector(".boton-comprar")?.addEventListener("click", e => {
     if (!carrito.length) {
         e.preventDefault();
@@ -36,6 +38,8 @@ document.querySelector(".boton-comprar")?.addEventListener("click", e => {
         setTimeout(() => location.href = "login.html", 1200);
     }
 });
+
+/* PEDIDO SIN PAYPAL */
 
 form?.addEventListener("submit", async e => {
     e.preventDefault();
@@ -65,6 +69,8 @@ form?.addEventListener("submit", async e => {
         boton.textContent = "Confirmar pedido";
     }
 });
+
+/* GUARDAR PEDIDO */
 
 async function guardarPedido(entrega, pago = null) {
     const totales = calcularTotales();
@@ -97,7 +103,8 @@ async function guardarPedido(entrega, pago = null) {
             clienteNombre: auth.currentUser.displayName || entrega.nombre,
             clienteCorreo: auth.currentUser.email,
             items: carrito.map(({ id, nombre, precio, cantidad }) =>
-                ({ id, nombre, precio, cantidad })),
+                ({ id, nombre, precio, cantidad })
+            ),
             entrega,
             ...totales,
             estado: pago ? "pagado" : "pendiente",
@@ -108,7 +115,6 @@ async function guardarPedido(entrega, pago = null) {
 
     return pedidoRef.id;
 }
-
 
 /* PAYPAL */
 
@@ -141,7 +147,8 @@ if (paypalRadio && paypalBox && window.paypal) {
 
             const orden = await r.json();
 
-            if (!r.ok) throw new Error(orden.error);
+            if (!r.ok)
+                throw new Error(orden.error || "No se pudo crear la orden.");
 
             return orden.id;
         },
@@ -173,6 +180,7 @@ if (paypalRadio && paypalBox && window.paypal) {
                 location.href = `pedido.html?id=${id}`;
 
             } catch (error) {
+                console.error(error);
                 mostrarNotificacion(error.message, "error");
             }
         },
@@ -187,7 +195,6 @@ if (paypalRadio && paypalBox && window.paypal) {
 
     }).render("#paypal-button-container");
 }
-
 
 /* MOSTRAR PEDIDO */
 
@@ -224,7 +231,8 @@ export async function mostrarPedido() {
             <p><strong>Total:</strong> S/ ${p.total.toFixed(2)}</p>
         `;
 
-    } catch {
+    } catch (error) {
+        console.error(error);
         contenedor.innerHTML = "<p>No se pudo cargar el pedido.</p>";
     }
 }

@@ -1,15 +1,41 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
+import swaggerUi from "swagger-ui-express";
+import swaggerJsdoc from "swagger-jsdoc";
 
 dotenv.config();
 
 const app = express();
 const PAYPAL_URL = "https://api-m.sandbox.paypal.com";
 
+const swaggerOptions = {
+    definition: {
+        openapi: "3.0.0",
+        info: {
+            title: "Patitas Felices API",
+            version: "1.0.0",
+            description: "API REST para gestionar los pagos con PayPal de Patitas Felices"
+        },
+        servers: [
+            {
+                url: "http://localhost:3000",
+                description: "Servidor local"
+            }
+        ]
+    },
+    apis: ["./server.js"]
+};
+
+const swaggerSpec = swaggerJsdoc(swaggerOptions);
+
 app.use(cors());
 app.use(express.json());
-
+app.use(
+    "/api-docs",
+    swaggerUi.serve,
+    swaggerUi.setup(swaggerSpec)
+);
 
 /* ===== OBTENER TOKEN DE PAYPAL ===== */
 
@@ -54,6 +80,21 @@ app.get("/", (req, res) => {
 
 /* ===== PROBAR CONEXIÓN PAYPAL ===== */
 
+/**
+ * @swagger
+ * /api/paypal/test:
+ *   get:
+ *     summary: Probar conexión con PayPal
+ *     description: Comprueba que las credenciales del servidor permiten conectarse con PayPal Sandbox.
+ *     tags:
+ *       - PayPal
+ *     responses:
+ *       200:
+ *         description: Conexión con PayPal correcta
+ *       500:
+ *         description: Error al conectar con PayPal
+ */
+
 app.get("/api/paypal/test", async (req, res) => {
 
     try {
@@ -78,6 +119,35 @@ app.get("/api/paypal/test", async (req, res) => {
 
 
 /* ===== CREAR ORDEN PAYPAL ===== */
+
+/**
+ * @swagger
+ * /api/paypal/orden:
+ *   post:
+ *     summary: Crear una orden de PayPal
+ *     description: Crea una orden de pago en PayPal Sandbox.
+ *     tags:
+ *       - PayPal
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - total
+ *             properties:
+ *               total:
+ *                 type: number
+ *                 example: 50.00
+ *     responses:
+ *       200:
+ *         description: Orden creada correctamente
+ *       400:
+ *         description: Total inválido
+ *       500:
+ *         description: Error al crear la orden en PayPal
+ */
 
 app.post("/api/paypal/orden", async (req, res) => {
 
@@ -163,6 +233,30 @@ app.post("/api/paypal/orden", async (req, res) => {
 
 /* ===== CAPTURAR PAGO PAYPAL ===== */
 
+/**
+ * @swagger
+ * /api/paypal/orden/{id}/capturar:
+ *   post:
+ *     summary: Capturar un pago de PayPal
+ *     description: Captura una orden de PayPal después de que el usuario haya aprobado el pago.
+ *     tags:
+ *       - PayPal
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: ID de la orden creada por PayPal
+ *     responses:
+ *       200:
+ *         description: Pago capturado correctamente
+ *       400:
+ *         description: ID de orden inválido
+ *       500:
+ *         description: Error al capturar el pago
+ */
+
 app.post(
     "/api/paypal/orden/:id/capturar",
     async (req, res) => {
@@ -215,10 +309,12 @@ app.post(
 
 /* ===== INICIAR SERVIDOR ===== */
 
-app.listen(3000, () => {
+const PORT = process.env.PORT || 3000;
+
+app.listen(PORT, "0.0.0.0", () => {
 
     console.log(
-        "Servidor activo en http://localhost:3000"
+        `Servidor activo en el puerto ${PORT}`
     );
 
 });

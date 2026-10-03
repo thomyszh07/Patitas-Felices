@@ -4,7 +4,14 @@
     "ignore": [
       "firebase.json",
       "**/.*",
-      "**/node_modules/**"
+      "**/node_modules/**",
+      "server.js",
+      "package.json",
+      "package-lock.json",
+      "Dockerfile",
+      "firestore.rules",
+      "firestore.indexes.json",
+      "README-FIREBASE.md"
     ]
   },
   "firestore": {

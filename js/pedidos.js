@@ -6,6 +6,11 @@ from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
 
 const $ = id => document.getElementById(id);
 const form = $("entregaForm");
+const API_URL =
+    location.hostname === "localhost" ||
+    location.hostname === "127.0.0.1"
+        ? "http://localhost:3000"
+        : "https://patitas-felices-1jlr.onrender.com";
 
 function datosEntrega() {
     return {
@@ -128,7 +133,7 @@ if (paypalRadio && paypalBox && window.paypal) {
 
             const { total } = calcularTotales();
 
-            const r = await fetch("http://localhost:3000/api/paypal/orden", {
+            const r = await fetch(`${API_URL}/api/paypal/orden`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ total })
@@ -144,7 +149,7 @@ if (paypalRadio && paypalBox && window.paypal) {
         onApprove: async data => {
             try {
                 const r = await fetch(
-                    `http://localhost:3000/api/paypal/orden/${data.orderID}/capturar`,
+                    `${API_URL}/api/paypal/orden/${data.orderID}/capturar`,
                     { method: "POST" }
                 );
 

@@ -1,361 +1,232 @@
-
 <!DOCTYPE html>
 <html lang="es">
 
 <head>
-
     <meta charset="UTF-8">
-
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0">
-
-    <title>PatitasFelices | Datos de entrega</title>
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patitas Felices | Datos de entrega</title>
     <link rel="stylesheet" href="css/estilos.css">
-
 </head>
-
 
 <body>
 
-    <!-- ================= HEADER ================= -->
+<header class="Headthing">
+    <div class="logo">
+        <img src="assets/PATITAS.jpg" alt="Patitas Felices" class="logo-img">
+        PATITAS FELICES
+    </div>
 
-    <header class="Headthing">
+    <nav>
+        <a href="index.html">INICIO</a>
+        <a href="productos.html">PRODUCTOS</a>
+        <a href="carrito.html">CARRITO</a>
 
-        <div class="logo">
-            <img src="assets/PATITAS.jpg" alt="Logo de Patitas Felices" class="logo-img">
-            PATITAS FELICES
-        </div>
+        <div class="menu-usuario" id="menuUsuario" data-logueado="false">
+            <button type="button" class="menu-usuario-boton" id="menuUsuarioBoton">
+                <span id="menuUsuarioTexto">INICIO SESIÓN</span>
+                <span>▾</span>
+            </button>
 
-        <nav>
-
-            <a href="index.html">
-                INICIO 
-            </a>
-
-            <a href="productos.html">
-                PRODUCTOS
-            </a>
-
-            <a href="carrito.html">
-                CARRITO
-            </a>
-
-            <div class="menu-usuario" id="menuUsuario" data-logueado="false">
-
-                <button type="button" class="menu-usuario-boton" id="menuUsuarioBoton">
-                    <span id="menuUsuarioTexto">INICIO SESIÓN</span>
-                    <span class="menu-usuario-flecha">▾</span>
+            <div class="menu-usuario-dropdown" id="menuUsuarioDropdown">
+                <p id="menuUsuarioNombre"></p>
+                <p id="menuUsuarioCorreo"></p>
+                <a href="perfil.html">Mi perfil</a>
+                <button type="button" id="menuUsuarioCerrarSesion">
+                    Cerrar sesión
                 </button>
+            </div>
+        </div>
+    </nav>
+</header>
 
-                <div class="menu-usuario-dropdown" id="menuUsuarioDropdown">
 
-                    <div class="menu-usuario-datos">
-                        <p class="menu-usuario-nombre" id="menuUsuarioNombre"></p>
-                        <p class="menu-usuario-correo" id="menuUsuarioCorreo"></p>
-                    </div>
+<main class="checkout">
 
-                    <a href="perfil.html">Mi perfil</a>
+    <section class="checkout-titulo">
+        <h1>Finaliza tu pedido 🐾</h1>
+        <p>Completa tus datos para realizar la entrega.</p>
 
-                    <button type="button" class="menu-usuario-cerrar" id="menuUsuarioCerrarSesion">
-                        Cerrar sesión
-                    </button>
+        <div class="pasos">
+            <span>✓ Carrito</span>
+            <span>→</span>
+            <strong>2. Entrega</strong>
+            <span>→</span>
+            <span>3. Confirmación</span>
+        </div>
+    </section>
 
+
+    <form id="entregaForm" class="checkout-card">
+
+        <section>
+            <h2>📍 Datos de entrega</h2>
+
+            <label for="nombreEntrega">Nombre completo</label>
+            <input
+                type="text"
+                id="nombreEntrega"
+                placeholder="Ejemplo: Juan Pérez"
+                required>
+
+            <div class="fila">
+
+                <div>
+                    <label for="telefonoEntrega">Teléfono</label>
+                    <input
+                        type="tel"
+                        id="telefonoEntrega"
+                        placeholder="987654321"
+                        maxlength="9"
+                        pattern="[0-9]{9}"
+                        required>
+                </div>
+
+                <div>
+                    <label for="distritoEntrega">Distrito</label>
+
+                    <select id="distritoEntrega" required>
+                        <option value="">Seleccione</option>
+                        <option>Ate</option>
+                        <option>Barranco</option>
+                        <option>Breña</option>
+                        <option>Callao</option>
+                        <option>Chorrillos</option>
+                        <option>Comas</option>
+                        <option>El Agustino</option>
+                        <option>Independencia</option>
+                        <option>La Molina</option>
+                        <option>Los Olivos</option>
+                        <option>Miraflores</option>
+                        <option>Pueblo Libre</option>
+                        <option>San Borja</option>
+                        <option>San Isidro</option>
+                        <option>San Juan de Lurigancho</option>
+                        <option>San Juan de Miraflores</option>
+                        <option>San Martín de Porres</option>
+                        <option>Santiago de Surco</option>
+                        <option>Surquillo</option>
+                        <option>Villa El Salvador</option>
+                        <option>Villa María del Triunfo</option>
+                    </select>
                 </div>
 
             </div>
 
-        </nav>
+            <label for="direccionEntrega">Dirección</label>
+            <input
+                type="text"
+                id="direccionEntrega"
+                placeholder="Av. / Jr. / Calle y número"
+                required>
 
-    </header>
+            <label for="referenciaEntrega">Referencia</label>
+            <textarea
+                id="referenciaEntrega"
+                rows="3"
+                placeholder="Ejemplo: Frente al parque..."></textarea>
 
-
-    <!-- ================= DATOS DE ENTREGA ================= -->
-
-    <main class="formulario-contenedor">
-
-        <div class="formulario formulario-entrega">
-
-            <h1>
-                Datos de entrega 🏠
-            </h1>
-
-            <p>
-                Completa tus datos para poder recibir tu pedido.
-            </p>
+        </section>
 
 
-            <form id="entregaForm">
+        <section>
+            <h2>🚚 Método de entrega</h2>
 
+            <div class="opciones">
 
-                <!-- NOMBRE -->
-
-                <label for="nombreEntrega">
-                    Nombre completo
+                <label class="opcion">
+                    <input
+                        type="radio"
+                        name="metodoEntrega"
+                        value="Delivery"
+                        checked>
+                    🚚 Delivery
                 </label>
 
-                <input
-                    type="text"
-                    id="nombreEntrega"
-                    placeholder="Ingrese su nombre completo"
-                    required>
-
-
-                <!-- TELÉFONO -->
-
-                <label for="telefonoEntrega">
-                    Número de teléfono
+                <label class="opcion">
+                    <input
+                        type="radio"
+                        name="metodoEntrega"
+                        value="Recojo en tienda">
+                    🏪 Recojo en tienda
                 </label>
 
-                <input
-                    type="tel"
-                    id="telefonoEntrega"
-                    placeholder="Ejemplo: 987654321"
-                    maxlength="9"
-                    required>
+            </div>
+        </section>
 
 
-                <!-- DIRECCIÓN -->
+        <section>
+            <h2>💳 Método de pago</h2>
 
-                <label for="direccionEntrega">
-                    Dirección
+            <div class="opciones">
+
+                <label class="opcion">
+                    <input
+                        type="radio"
+                        name="metodoPago"
+                        value="Yape / Plin"
+                        checked>
+                    📱 Yape / Plin
                 </label>
 
-                <input
-                    type="text"
-                    id="direccionEntrega"
-                    placeholder="Av. / Jr. / Calle y número"
-                    required>
-
-
-                <!-- DISTRITO -->
-
-                <label for="distritoEntrega">
-                    Distrito
+                <label class="opcion">
+                    <input
+                        type="radio"
+                        name="metodoPago"
+                        value="Pago contra entrega">
+                    💵 Pago contra entrega
                 </label>
 
-                <select
-                    id="distritoEntrega"
-                    required>
-
-                    <option value="">
-                        Seleccione su distrito
-                    </option>
-
-                    <option value="Ate">
-                        Ate
-                    </option>
-
-                    <option value="Barranco">
-                        Barranco
-                    </option>
-
-                    <option value="Breña">
-                        Breña
-                    </option>
-
-                    <option value="Callao">
-                        Callao
-                    </option>
-
-                    <option value="Chorrillos">
-                        Chorrillos
-                    </option>
-
-                    <option value="Comas">
-                        Comas
-                    </option>
-
-                    <option value="El Agustino">
-                        El Agustino
-                    </option>
-
-                    <option value="Independencia">
-                        Independencia
-                    </option>
-
-                    <option value="La Molina">
-                        La Molina
-                    </option>
-
-                    <option value="Los Olivos">
-                        Los Olivos
-                    </option>
-
-                    <option value="Miraflores">
-                        Miraflores
-                    </option>
-
-                    <option value="Pueblo Libre">
-                        Pueblo Libre
-                    </option>
-
-                    <option value="San Borja">
-                        San Borja
-                    </option>
-
-                    <option value="San Isidro">
-                        San Isidro
-                    </option>
-
-                    <option value="San Juan de Lurigancho">
-                        San Juan de Lurigancho
-                    </option>
-
-                    <option value="San Juan de Miraflores">
-                        San Juan de Miraflores
-                    </option>
-
-                    <option value="San Martín de Porres">
-                        San Martín de Porres
-                    </option>
-
-                    <option value="Santiago de Surco">
-                        Santiago de Surco
-                    </option>
-
-                    <option value="Surquillo">
-                        Surquillo
-                    </option>
-
-                    <option value="Villa El Salvador">
-                        Villa El Salvador
-                    </option>
-
-                    <option value="Villa María del Triunfo">
-                        Villa María del Triunfo
-                    </option>
-
-                </select>
-
-
-                <!-- REFERENCIA -->
-
-                <label for="referenciaEntrega">
-                    Referencia
+                <label class="opcion">
+                    <input
+                        type="radio"
+                        name="metodoPago"
+                        value="PayPal">
+                    💳 PayPal
                 </label>
 
-                <textarea
-                    id="referenciaEntrega"
-                    rows="3"
-                    placeholder="Ejemplo: Cerca del parque, frente a la farmacia..."></textarea>
+            </div>
+
+            <!-- AQUÍ APARECERÁ EL BOTÓN DE PAYPAL -->
+            <div
+                id="paypal-button-container"
+                style="display:none; margin-top:20px;">
+            </div>
+
+        </section>
 
 
-                <!-- MÉTODO DE ENTREGA -->
-
-                <label>
-                    Método de entrega
-                </label>
-
-                <div class="opciones">
-
-                    <label class="opcion">
-
-                        <input
-                            type="radio"
-                            name="metodoEntrega"
-                            value="Delivery"
-                            checked>
-
-                        🚚 Delivery
-
-                    </label>
+        <p class="nota">
+            🔒 Tus datos se utilizarán únicamente para procesar tu pedido.
+        </p>
 
 
-                    <label class="opcion">
+        <div class="botones-entrega">
 
-                        <input
-                            type="radio"
-                            name="metodoEntrega"
-                            value="Recojo en tienda">
+            <a href="carrito.html" class="boton boton-secundario">
+                ← Volver
+            </a>
 
-                        🏪 Recojo en tienda
-
-                    </label>
-
-                </div>
-
-
-                <!-- MÉTODO DE PAGO -->
-
-                <label>
-                    Método de pago
-                </label>
-
-                <div class="opciones">
-
-                    <label class="opcion">
-
-                        <input
-                            type="radio"
-                            name="metodoPago"
-                            value="Yape / Plin"
-                            checked>
-
-                        📱 Yape / Plin
-
-                    </label>
-
-
-                    <label class="opcion">
-
-                        <input
-                            type="radio"
-                            name="metodoPago"
-                            value="Pago contra entrega">
-
-                        💵 Pago contra entrega
-
-                    </label>
-
-                </div>
-
-
-                <!-- BOTONES -->
-
-                <div class="botones-entrega">
-
-                    <a
-                        href="carrito.html"
-                        class="boton boton-secundario">
-
-                        ← Volver al carrito
-
-                    </a>
-
-
-                    <button
-                        type="submit"
-                        class="boton">
-
-                        Confirmar pedido
-
-                    </button>
-
-                </div>
-
-            </form>
+            <button type="submit" class="boton">
+                Confirmar pedido
+            </button>
 
         </div>
 
-    </main>
+    </form>
+
+</main>
 
 
-    <!-- ================= FOOTER ================= -->
-
-    <footer>
-
-        <p>
-            © 2026 Patitas Felices. Todos los derechos reservados.
-        </p>
-
-    </footer>
+<footer>
+    <p>© 2026 Patitas Felices. Todos los derechos reservados.</p>
+</footer>
 
 
-    <script type="module" src="js/main.js"></script>
+<!-- SDK DE PAYPAL -->
+<script src="https://www.paypal.com/sdk/js?client-id=BAAB5VOTaeT07wmqv18Wsnw2NdAYWQfDZDyEQZK8gg5o8GjuAwMIkTr0NMXlEJPkWmRSJRRIxVsYjmZ1P0&currency=USD"></script>
+
+<!-- JAVASCRIPT DEL PROYECTO -->
+<script type="module" src="js/main.js"></script>
 
 </body>
-
 </html>
-

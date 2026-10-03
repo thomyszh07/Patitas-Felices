@@ -839,3 +839,93 @@ footer {
         grid-template-columns: repeat(2, 1fr);
     }
 }
+/* ===== DATOS DE ENTREGA ===== */
+.checkout{
+    width:min(900px,92%); margin:auto; padding:130px 0 50px;
+}
+.checkout-titulo{
+    text-align:center; margin-bottom:25px;
+}
+.checkout-titulo h1{
+    color:#5c3517; margin-bottom:8px;
+}
+.checkout-titulo p{color:#806c58;}
+.pasos{
+    display:flex; justify-content:center; align-items:center;
+    gap:12px; margin-top:20px;
+}
+.pasos span,.pasos strong{
+    padding:8px 14px; border-radius:20px;
+    background:#fff0ca; color:#6b3e18;
+}
+.pasos strong{
+    background:#ed9141; color:white;
+}
+.checkout-card{
+    max-width:700px; margin:auto; padding:30px;
+    background:#fffdf6; border:1px solid #edc982;
+    border-radius:15px; box-shadow:0 5px 18px #00000012;
+}
+.checkout-card section{
+    margin-bottom:28px;
+}
+.checkout-card h2{
+    color:#5c3517; margin-bottom:15px;
+}
+.checkout-card label{
+    display:block; margin:12px 0 6px; font-weight:bold;
+}
+.checkout-card input,
+.checkout-card select,
+.checkout-card textarea{
+    width:100%; padding:11px; border:1px solid #ddb86d;
+    border-radius:8px; background:white; font:inherit;
+    outline:none;
+}
+.checkout-card input:focus,
+.checkout-card select:focus,
+.checkout-card textarea:focus{
+    border-color:#ed9141;
+}
+.fila,.opciones,.botones-entrega{
+    display:grid; grid-template-columns:1fr 1fr; gap:12px;
+}
+.opcion{
+    display:flex!important; align-items:center; gap:8px;
+    padding:13px; margin:0!important; cursor:pointer;
+    border:1px solid #edc982; border-radius:10px;
+    background:white;
+}
+.opcion input{
+    width:auto;
+}
+.opcion:has(input:checked){
+    border-color:#ed9141; background:#fff0ca;
+}
+.paypal{
+    opacity:.55; cursor:not-allowed;
+}
+.paypal small{
+    margin-left:auto;
+}
+.nota{
+    padding:12px; margin:15px 0;
+    border-radius:8px; background:#fff0ca;
+}
+.botones-entrega{
+    margin-top:20px;
+}
+.botones-entrega .boton{
+    width:100%; margin:0;
+    display:flex; align-items:center; justify-content:center;
+}
+.boton-secundario{
+    background:white; color:#5c3517;
+    border:1px solid #edc982;
+}
+@media(max-width:650px){
+    .checkout{padding-top:220px;}
+    .fila,.opciones,.botones-entrega{grid-template-columns:1fr;}
+    .checkout-card{padding:20px;}
+    .pasos{flex-wrap:wrap;}
+}

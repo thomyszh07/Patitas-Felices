@@ -1,277 +1,225 @@
-/* =========================================
-   PEDIDOS (Firestore, colección "pedidos")
-   Descuenta stock con una transacción para
-   evitar vender más de lo disponible.
-========================================= */
-
 import { auth, db } from "./firebase-config.js";
 import { carrito, calcularTotales, vaciarCarrito } from "./carrito.js";
 import { mostrarNotificacion } from "./notificaciones.js";
+import { collection, doc, getDoc, runTransaction, serverTimestamp }
+from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
 
-import {
-    collection,
-    doc,
-    addDoc,
-    getDoc,
-    runTransaction,
-    serverTimestamp
-} from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
+const $ = id => document.getElementById(id);
+const form = $("entregaForm");
 
-
-/* =========================================
-   VALIDAR ANTES DE IR A "DATOS DE ENTREGA"
-   (el link "Realizar pedido" en carrito.html)
-========================================= */
-
-const linkRealizarPedido = document.querySelector(".boton-comprar");
-
-if (linkRealizarPedido) {
-
-    linkRealizarPedido.addEventListener("click", function (event) {
-
-        if (carrito.length === 0) {
-
-            event.preventDefault();
-            mostrarNotificacion("Tu carrito está vacío.", "error");
-            return;
-
-        }
-
-        if (!auth.currentUser) {
-
-            event.preventDefault();
-            mostrarNotificacion("Debes iniciar sesión para realizar un pedido.", "error");
-
-            setTimeout(() => {
-                window.location.href = "login.html";
-            }, 1400);
-
-        }
-
-    });
-
+function datosEntrega() {
+    return {
+        nombre: $("nombreEntrega").value.trim(),
+        telefono: $("telefonoEntrega").value.trim(),
+        direccion: $("direccionEntrega").value.trim(),
+        distrito: $("distritoEntrega").value,
+        referencia: $("referenciaEntrega").value.trim(),
+        metodoEntrega: document.querySelector('[name="metodoEntrega"]:checked').value,
+        metodoPago: document.querySelector('[name="metodoPago"]:checked').value
+    };
 }
 
+document.querySelector(".boton-comprar")?.addEventListener("click", e => {
+    if (!carrito.length) {
+        e.preventDefault();
+        return mostrarNotificacion("Tu carrito está vacío.", "error");
+    }
 
-/* =========================================
-   FORMULARIO DE DATOS DE ENTREGA
-   -> aquí se confirma el pedido de verdad
-========================================= */
+    if (!auth.currentUser) {
+        e.preventDefault();
+        mostrarNotificacion("Debes iniciar sesión.", "error");
+        setTimeout(() => location.href = "login.html", 1200);
+    }
+});
 
-const entregaForm = document.getElementById("entregaForm");
+form?.addEventListener("submit", async e => {
+    e.preventDefault();
 
-if (entregaForm) {
+    if (!auth.currentUser)
+        return mostrarNotificacion("Debes iniciar sesión.", "error");
 
-    entregaForm.addEventListener("submit", async function (event) {
+    if (!carrito.length)
+        return mostrarNotificacion("Tu carrito está vacío.", "error");
 
-        event.preventDefault();
+    const datos = datosEntrega();
 
-        if (!auth.currentUser) {
-            mostrarNotificacion("Debes iniciar sesión para realizar un pedido.", "error");
-            setTimeout(() => {
-                window.location.href = "login.html";
-            }, 1400);
-            return;
-        }
+    if (datos.metodoPago === "PayPal")
+        return mostrarNotificacion("Usa el botón de PayPal para pagar.", "error");
 
-        if (carrito.length === 0) {
-            mostrarNotificacion("Tu carrito está vacío.", "error");
-            return;
-        }
+    const boton = form.querySelector("button[type='submit']");
+    boton.disabled = true;
+    boton.textContent = "Procesando...";
 
-        const datosEntrega = {
+    try {
+        const id = await guardarPedido(datos);
+        vaciarCarrito();
+        location.href = `pedido.html?id=${id}`;
+    } catch (error) {
+        mostrarNotificacion(error.message, "error");
+        boton.disabled = false;
+        boton.textContent = "Confirmar pedido";
+    }
+});
 
-            nombre: document.getElementById("nombreEntrega").value.trim(),
-            telefono: document.getElementById("telefonoEntrega").value.trim(),
-            direccion: document.getElementById("direccionEntrega").value.trim(),
-            distrito: document.getElementById("distritoEntrega").value,
-            referencia: document.getElementById("referenciaEntrega").value.trim(),
-
-            metodoEntrega: document.querySelector(
-                'input[name="metodoEntrega"]:checked'
-            ).value,
-
-            metodoPago: document.querySelector(
-                'input[name="metodoPago"]:checked'
-            ).value
-
-        };
-
-        const botonSubmit = entregaForm.querySelector('button[type="submit"]');
-        botonSubmit.disabled = true;
-        botonSubmit.textContent = "Procesando...";
-
-        try {
-
-            const pedidoId = await confirmarPedido(datosEntrega);
-
-            vaciarCarrito();
-
-            window.location.href = "pedido.html?id=" + pedidoId;
-
-        } catch (error) {
-
-            console.error(error);
-            mostrarNotificacion(error.message || "No se pudo procesar el pedido. Intenta nuevamente.", "error");
-
-            botonSubmit.disabled = false;
-            botonSubmit.textContent = "Confirmar pedido";
-
-        }
-
-    });
-
-}
-
-
-/* =========================================
-   TRANSACCIÓN: descuenta stock y crea el pedido
-========================================= */
-
-async function confirmarPedido(datosEntrega) {
-
+async function guardarPedido(entrega, pago = null) {
     const totales = calcularTotales();
-    const usuario = auth.currentUser;
+    const pedidoRef = doc(collection(db, "pedidos"));
 
-    // 1) Descontar stock dentro de una transacción: si algún producto
-    //    no tiene suficiente stock, TODA la operación se cancela y no
-    //    se cobra ni se crea el pedido.
-        await runTransaction(db, async (transaccion) => {
-
-        // PASO 1: LEER todos los productos primero
-        const lecturas = [];
+    await runTransaction(db, async t => {
+        const productos = [];
 
         for (const item of carrito) {
+            const ref = doc(db, "productos", item.id);
+            const snap = await t.get(ref);
 
-            const productoRef = doc(db, "productos", item.id);
-            const productoSnap = await transaccion.get(productoRef);
+            if (!snap.exists())
+                throw new Error(`${item.nombre} no existe.`);
 
-            lecturas.push({ item, productoRef, productoSnap });
+            const stock = snap.data().stock || 0;
 
+            if (stock < item.cantidad)
+                throw new Error(`Stock insuficiente de ${item.nombre}.`);
+
+            productos.push({ item, ref, stock });
         }
 
-        // PASO 2: validar que existan y tengan stock
-        for (const { item, productoSnap } of lecturas) {
+        productos.forEach(({ item, ref, stock }) =>
+            t.update(ref, { stock: stock - item.cantidad })
+        );
 
-            if (!productoSnap.exists()) {
-                throw new Error("El producto '" + item.nombre + "' ya no existe.");
-            }
-
-            const stockActual = productoSnap.data().stock || 0;
-
-            if (stockActual < item.cantidad) {
-                throw new Error(
-                    "Ya no hay suficiente stock de '" + item.nombre + "' " +
-                    "(disponible: " + stockActual + ")."
-                );
-            }
-
-        }
-
-        // PASO 3: ESCRIBIR (descontar stock) al final
-        for (const { item, productoRef, productoSnap } of lecturas) {
-
-            const stockActual = productoSnap.data().stock || 0;
-
-            transaccion.update(productoRef, { stock: stockActual - item.cantidad });
-
-        }
-
-    });
-
-    // 2) Si el stock se descontó sin problemas, recién ahí creamos el pedido
-    const pedidoRef = await addDoc(collection(db, "pedidos"), {
-
-        uid: usuario.uid,
-        clienteNombre: usuario.displayName || datosEntrega.nombre,
-        clienteCorreo: usuario.email,
-
-        items: carrito.map(item => ({
-            id: item.id,
-            nombre: item.nombre,
-            precio: item.precio,
-            cantidad: item.cantidad
-        })),
-
-        entrega: datosEntrega,
-
-        subtotal: totales.subtotal,
-        envio: totales.envio,
-        total: totales.total,
-
-        estado: "pendiente",
-        fecha: serverTimestamp()
-
+        t.set(pedidoRef, {
+            uid: auth.currentUser.uid,
+            clienteNombre: auth.currentUser.displayName || entrega.nombre,
+            clienteCorreo: auth.currentUser.email,
+            items: carrito.map(({ id, nombre, precio, cantidad }) =>
+                ({ id, nombre, precio, cantidad })),
+            entrega,
+            ...totales,
+            estado: pago ? "pagado" : "pendiente",
+            pago,
+            fecha: serverTimestamp()
+        });
     });
 
     return pedidoRef.id;
-
 }
 
 
-/* =========================================
-   MOSTRAR DATOS DEL PEDIDO (pedido.html)
-========================================= */
+/* PAYPAL */
 
-export async function mostrarPedido() {
+const paypalRadio = document.querySelector('input[value="PayPal"]');
+const paypalBox = $("paypal-button-container");
 
-    const contenedor = document.getElementById("datosPedido");
+if (paypalRadio && paypalBox && window.paypal) {
 
-    if (!contenedor) {
-        return;
-    }
+    document.querySelectorAll('[name="metodoPago"]').forEach(radio =>
+        radio.addEventListener("change", () =>
+            paypalBox.style.display = paypalRadio.checked ? "block" : "none"
+        )
+    );
 
-    const parametros = new URLSearchParams(window.location.search);
-    const pedidoId = parametros.get("id");
+    paypal.Buttons({
 
-    if (!pedidoId) {
-        contenedor.innerHTML = "<p>No se encontró información del pedido.</p>";
-        return;
-    }
+        createOrder: async () => {
+            if (!form.checkValidity()) {
+                form.reportValidity();
+                throw new Error("Completa los datos");
+            }
 
-    try {
+            const { total } = calcularTotales();
 
-        const pedidoSnap = await getDoc(doc(db, "pedidos", pedidoId));
+            const r = await fetch("http://localhost:3000/api/paypal/orden", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ total })
+            });
 
-        if (!pedidoSnap.exists()) {
-            contenedor.innerHTML = "<p>No se encontró este pedido.</p>";
-            return;
+            const orden = await r.json();
+
+            if (!r.ok) throw new Error(orden.error);
+
+            return orden.id;
+        },
+
+        onApprove: async data => {
+            try {
+                const r = await fetch(
+                    `http://localhost:3000/api/paypal/orden/${data.orderID}/capturar`,
+                    { method: "POST" }
+                );
+
+                const pagoPayPal = await r.json();
+
+                if (!r.ok || pagoPayPal.status !== "COMPLETED")
+                    throw new Error("No se pudo completar el pago.");
+
+                const pago = {
+                    metodo: "PayPal",
+                    estado: "COMPLETED",
+                    orderId: data.orderID,
+                    captureId:
+                        pagoPayPal.purchase_units?.[0]
+                            ?.payments?.captures?.[0]?.id || ""
+                };
+
+                const id = await guardarPedido(datosEntrega(), pago);
+
+                vaciarCarrito();
+                location.href = `pedido.html?id=${id}`;
+
+            } catch (error) {
+                mostrarNotificacion(error.message, "error");
+            }
+        },
+
+        onCancel: () =>
+            mostrarNotificacion("Pago cancelado.", "error"),
+
+        onError: error => {
+            console.error(error);
+            mostrarNotificacion("Error con PayPal.", "error");
         }
 
-        const pedido = pedidoSnap.data();
+    }).render("#paypal-button-container");
+}
 
-        const fecha = pedido.fecha
-            ? pedido.fecha.toDate().toLocaleString()
-            : "—";
 
-        const itemsHtml = pedido.items.map(item =>
+/* MOSTRAR PEDIDO */
+
+export async function mostrarPedido() {
+    const contenedor = $("datosPedido");
+    if (!contenedor) return;
+
+    const id = new URLSearchParams(location.search).get("id");
+
+    if (!id)
+        return contenedor.innerHTML = "<p>No se encontró el pedido.</p>";
+
+    try {
+        const snap = await getDoc(doc(db, "pedidos", id));
+
+        if (!snap.exists())
+            return contenedor.innerHTML = "<p>El pedido no existe.</p>";
+
+        const p = snap.data();
+
+        const productos = p.items.map(item =>
             `<p>${item.cantidad} × ${item.nombre} — S/ ${(item.precio * item.cantidad).toFixed(2)}</p>`
         ).join("");
 
         contenedor.innerHTML = `
-
-            <p><strong>N° de pedido:</strong> ${pedidoId}</p>
-            <p><strong>Cliente:</strong> ${pedido.clienteNombre}</p>
-            <p><strong>Correo:</strong> ${pedido.clienteCorreo}</p>
-            <p><strong>Fecha:</strong> ${fecha}</p>
-
-            <hr style="margin: 12px 0;">
-
-            ${itemsHtml}
-
-            <hr style="margin: 12px 0;">
-
-            <p><strong>Entrega:</strong> ${pedido.entrega.metodoEntrega} — ${pedido.entrega.distrito}</p>
-            <p><strong>Pago:</strong> ${pedido.entrega.metodoPago}</p>
-            <p><strong>Total:</strong> S/ ${pedido.total.toFixed(2)}</p>
-
+            <p><strong>N° pedido:</strong> ${id}</p>
+            <p><strong>Cliente:</strong> ${p.clienteNombre}</p>
+            <p><strong>Correo:</strong> ${p.clienteCorreo}</p>
+            <hr>${productos}<hr>
+            <p><strong>Entrega:</strong> ${p.entrega.metodoEntrega}</p>
+            <p><strong>Distrito:</strong> ${p.entrega.distrito}</p>
+            <p><strong>Pago:</strong> ${p.entrega.metodoPago}</p>
+            <p><strong>Estado:</strong> ${p.estado}</p>
+            <p><strong>Total:</strong> S/ ${p.total.toFixed(2)}</p>
         `;
 
-    } catch (error) {
-
-        console.error(error);
+    } catch {
         contenedor.innerHTML = "<p>No se pudo cargar el pedido.</p>";
-
     }
-
 }
